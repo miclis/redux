@@ -1,31 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import * as courseActions from '../../redux/actions/courseActions';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import CourseList from './CourseList';
 
 function CoursesPage(props) {
-    const [course, setCourse] = useState({ title: '' });
-
-    const handleChange = (event) => {
-        setCourse({ ...course, title: event.target.value });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        props.actions.createCourse(course);
-    };
+    useEffect(() => {
+        props.actions.loadCourses().catch((error) => {
+            alert('Loading courses failed ' + error);
+        });
+    }, []);
 
     return (
-        <form onSubmit={handleSubmit}>
+        <>
             <h2>Courses</h2>
-            <h3>Add Course</h3>
-            <input type="text" onChange={handleChange} value={course.title} />
-            <input type="submit" value="Save" />
-            {props.courses.map((course) => (
-                <div key={course.title}>{course.title}</div>
-            ))}
-        </form>
+            <CourseList courses={props.courses} />
+        </>
     );
 }
 
