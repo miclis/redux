@@ -1,13 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as courseActions from '../../redux/actions/courseActions';
 import * as authorActions from '../../redux/actions/authorActions';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import CourseList from './CourseList';
+import { Redirect } from 'react-router-dom';
 
 function CoursesPage(props) {
     const { courses, authors, actions } = props;
+
+    const [redirectToAddCoursePage, setRedirectToAddCoursePage] = useState(false);
 
     useEffect(() => {
         if (courses.length === 0) {
@@ -24,7 +27,12 @@ function CoursesPage(props) {
 
     return (
         <>
+            {redirectToAddCoursePage && <Redirect to="/course" />}
             <h2>Courses</h2>
+            <button
+                style={{ marginBottom: 20 }}
+                className="btn btn-primary add-course"
+                onClick={() => setRedirectToAddCoursePage(true)}>Add Course</button>
             <CourseList courses={props.courses} />
         </>
     );
