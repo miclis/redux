@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import CourseList from './CourseList';
 import { Redirect } from 'react-router-dom';
+import Spinner from '../common/Spinner';
 
 function CoursesPage(props) {
     const { courses, authors, actions } = props;
@@ -29,11 +30,20 @@ function CoursesPage(props) {
         <>
             {redirectToAddCoursePage && <Redirect to="/course" />}
             <h2>Courses</h2>
-            <button
-                style={{ marginBottom: 20 }}
-                className="btn btn-primary add-course"
-                onClick={() => setRedirectToAddCoursePage(true)}>Add Course</button>
-            <CourseList courses={props.courses} />
+            {props.loading ? (
+                <Spinner />
+            ) : (
+                <>
+                    <button
+                        style={{ marginBottom: 20 }}
+                        className="btn btn-primary add-course"
+                        onClick={() => setRedirectToAddCoursePage(true)}
+                    >
+                        Add Course
+                    </button>
+                    <CourseList courses={props.courses} />
+                </>
+            )}
         </>
     );
 }
@@ -42,6 +52,7 @@ CoursesPage.propTypes = {
     courses: PropTypes.array.isRequired,
     authors: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -56,6 +67,7 @@ function mapStateToProps(state) {
                       };
                   }),
         authors: state.authors,
+        loading: state.apiCallsInProgress > 0,
     };
 }
 
