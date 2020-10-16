@@ -14,7 +14,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/',
-        filename: 'bundle.js',
+        filename: 'bundle.[contenthash].js',
     },
     plugins: [
         // Display bundle stats

@@ -8,7 +8,7 @@
     "start:api": "node tools/apiServer.js",
     "test": "jest --watch",
     "test:ci": "jest",
-    "clean:build": "rimraf .build && mkdir build",
+    "clean:build": "rimraf ./build && mkdir build",
     "prebuild": "run-p clean:build test:ci",
     "build": "webpack --config webpack.config.prod.js",
     "postbuild": "run-p start:api serve:build",
